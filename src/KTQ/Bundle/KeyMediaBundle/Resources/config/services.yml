@@ -1,6 +1,7 @@
 parameters:
     ezpublish.fieldType.keymedia.class: KTQ\Bundle\KeyMediaBundle\FieldType\KeyMedia\Type
     ezpublish.fieldType.keymedia.converter.class: KTQ\Bundle\KeyMediaBundle\FieldType\KeyMedia\Converter
+    keymedia_open_graph_handler.field_type.keymedia.class: KTQ\Bundle\KeymediaBundle\OpenGraph\Handler\KeymediaHandler
 
 services:
     ezpublish.fieldType.keymedia:
@@ -19,3 +20,13 @@ services:
         arguments: [@ezpublish_legacy.kernel, @ezpublish.translation_helper]
         tags:
             - { name: twig.extension }
+
+    keymedia_open_graph_handler.field_type.keymedia:
+        class: %keymedia_open_graph_handler.field_type.keymedia.class%
+        parent: netgen_open_graph.handler.field_type.abstract
+        arguments:
+            - @keymedia.twig_extension
+            - @?logger
+        lazy: true
+        tags:
+            - { name: netgen_open_graph.meta_tag_handler, alias: field_type/keymedia }
